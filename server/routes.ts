@@ -48,7 +48,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Get the product ID based on the plan
       const products = await storage.getProducts();
-      const product = products.find(p => p.type === plan);
+      const product = products.find((p: { type: string }) => p.type === plan);
       
       if (!product) {
         return res.status(404).json({ message: "Product not found" });
