@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
+import { Menu, User, ShoppingCart } from "lucide-react";
 
 export default function Header() {
   const [location] = useLocation();
@@ -59,7 +59,18 @@ export default function Header() {
             ))}
           </nav>
           
-          <div className="flex items-center">
+          <div className="flex items-center space-x-4">
+            {/* Account Button */}
+            <Link href="/account" className="hidden md:flex text-gray-700 hover:text-primary transition">
+              <User className="h-5 w-5" />
+            </Link>
+            
+            {/* Cart Button */}
+            <Link href="/cart" className="hidden md:flex text-gray-700 hover:text-primary transition">
+              <ShoppingCart className="h-5 w-5" />
+            </Link>
+            
+            {/* Buy Now Button */}
             <button
               onClick={() => scrollToSection("buy")}
               className="hidden md:inline-flex text-sm font-medium px-5 py-2 rounded-full border border-gray-800 hover:bg-gray-800 hover:text-white transition duration-300"
@@ -86,6 +97,31 @@ export default function Header() {
                       {item.label}
                     </button>
                   ))}
+                  
+                  <div className="pt-4 border-t border-gray-100">
+                    <Link 
+                      href="/account"
+                      className="flex items-center py-2 text-base font-medium hover:text-primary transition"
+                      onClick={() => {
+                        document.querySelector('[data-state="open"]')?.setAttribute('data-state', 'closed');
+                      }}
+                    >
+                      <User className="h-5 w-5 mr-2" />
+                      My Account
+                    </Link>
+                    
+                    <Link 
+                      href="/cart"
+                      className="flex items-center py-2 text-base font-medium hover:text-primary transition"
+                      onClick={() => {
+                        document.querySelector('[data-state="open"]')?.setAttribute('data-state', 'closed');
+                      }}
+                    >
+                      <ShoppingCart className="h-5 w-5 mr-2" />
+                      Shopping Cart
+                    </Link>
+                  </div>
+                  
                   <button
                     onClick={() => {
                       scrollToSection("buy");
