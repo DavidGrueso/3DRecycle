@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, User, ShoppingCart } from "lucide-react";
+import { Menu, User, ShoppingCart, ChevronDown } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function Header() {
   const [location] = useLocation();
@@ -26,7 +32,14 @@ export default function Header() {
     { id: "features", label: "Features" },
     { id: "specifications", label: "Tech Specs" },
     { id: "faq", label: "FAQ" },
-    { id: "contact", label: "Contact" }
+    { id: "contact", label: "Contact" },
+  ];
+  
+  // Product versions
+  const productVersions = [
+    { id: "standard", label: "EcoFilament Standard", path: "/products/standard" },
+    { id: "pro", label: "EcoFilament Pro", path: "/products/pro" },
+    { id: "industrial", label: "EcoFilament Industrial", path: "/products/industrial" }
   ];
 
   const scrollToSection = (id: string) => {
@@ -57,6 +70,22 @@ export default function Header() {
                 {item.label}
               </button>
             ))}
+            
+            {/* Products Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger className="text-sm font-medium hover:text-primary transition cursor-pointer flex items-center">
+                Products <ChevronDown className="ml-1 h-4 w-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                {productVersions.map((product) => (
+                  <DropdownMenuItem key={product.id} asChild>
+                    <Link href={product.path} className="w-full cursor-pointer">
+                      {product.label}
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </nav>
           
           <div className="flex items-center space-x-4">
@@ -97,6 +126,25 @@ export default function Header() {
                       {item.label}
                     </button>
                   ))}
+                  
+                  {/* Products in mobile menu */}
+                  <div className="py-2">
+                    <p className="text-base font-medium mb-2">Products</p>
+                    <div className="pl-4 space-y-2">
+                      {productVersions.map((product) => (
+                        <Link
+                          key={product.id}
+                          href={product.path}
+                          className="block text-sm py-1 text-gray-600 hover:text-primary transition"
+                          onClick={() => {
+                            document.querySelector('[data-state="open"]')?.setAttribute('data-state', 'closed');
+                          }}
+                        >
+                          {product.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
                   
                   <div className="pt-4 border-t border-gray-100">
                     <Link 

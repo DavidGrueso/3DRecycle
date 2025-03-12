@@ -15,6 +15,9 @@ import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import TermsOfService from "@/pages/TermsOfService";
 import CookiePolicy from "@/pages/CookiePolicy";
 import Compliance from "@/pages/Compliance";
+import Account from "@/pages/Account";
+import Cart from "@/pages/Cart";
+import ProductDetail from "@/pages/ProductDetail";
 
 function Router() {
   return (
@@ -31,6 +34,9 @@ function Router() {
       <Route path="/terms-of-service" component={TermsOfService} />
       <Route path="/cookie-policy" component={CookiePolicy} />
       <Route path="/compliance" component={Compliance} />
+      <Route path="/account" component={Account} />
+      <Route path="/cart" component={Cart} />
+      <Route path="/products/:id" component={ProductDetail} />
       {/* Fallback to 404 */}
       <Route component={NotFound} />
     </Switch>
