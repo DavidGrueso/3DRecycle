@@ -18,6 +18,72 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { apiRequest } from "@/lib/queryClient";
 
+// Initialize Stripe
+if (!import.meta.env.VITE_STRIPE_PUBLIC_KEY) {
+  throw new Error("Missing Stripe public key");
+}
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+
+// Payment form component
+function PaymentForm({ onBack, onSuccess }: { onBack: () => void; onSuccess: () => void }) {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!stripe || !elements) {
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const { error: submitError } = await elements.submit();
+      if (submitError) {
+        throw submitError;
+      }
+
+      const { error } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: `${window.location.origin}/checkout/confirmation`,
+        },
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      onSuccess();
+    } catch (error: any) {
+      toast({
+        title: "Payment failed",
+        description: error.message || "An error occurred during payment",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <PaymentElement />
+      <div className="flex justify-between mt-8">
+        <Button type="button" variant="outline" onClick={onBack}>
+          Back
+        </Button>
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? "Processing..." : "Place Order"}
+        </Button>
+      </div>
+    </form>
+  );
+}
+
 // Form schema for shipping info
 const shippingFormSchema = z.object({
   fullName: z.string().min(2, { message: "Full name must be at least 2 characters" }),
