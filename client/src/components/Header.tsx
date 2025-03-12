@@ -8,10 +8,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useCart } from "@/lib/CartContext";
+import { Badge } from "@/components/ui/badge";
 
 export default function Header() {
   const [location] = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
+  const { cartCount } = useCart();
   
   // Handle scroll effect for the header
   useEffect(() => {
@@ -94,9 +97,14 @@ export default function Header() {
               <User className="h-5 w-5" />
             </Link>
             
-            {/* Cart Button */}
-            <Link href="/cart" className="hidden md:flex text-gray-700 hover:text-primary transition">
+            {/* Cart Button with Counter */}
+            <Link href="/cart" className="hidden md:flex items-center text-gray-700 hover:text-primary transition relative">
               <ShoppingCart className="h-5 w-5" />
+              {cartCount > 0 && (
+                <Badge variant="destructive" className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs">
+                  {cartCount}
+                </Badge>
+              )}
             </Link>
             
             {/* Buy Now Button */}
@@ -165,8 +173,15 @@ export default function Header() {
                         document.querySelector('[data-state="open"]')?.setAttribute('data-state', 'closed');
                       }}
                     >
-                      <ShoppingCart className="h-5 w-5 mr-2" />
-                      Shopping Cart
+                      <div className="relative">
+                        <ShoppingCart className="h-5 w-5 mr-2" />
+                        {cartCount > 0 && (
+                          <Badge variant="destructive" className="absolute -top-2 -right-2 h-4 w-4 flex items-center justify-center p-0 text-[10px]">
+                            {cartCount}
+                          </Badge>
+                        )}
+                      </div>
+                      Shopping Cart {cartCount > 0 && `(${cartCount})`}
                     </Link>
                   </div>
                   
@@ -189,24 +204,33 @@ export default function Header() {
   );
 }
 
-// Add the custom nav item styling
-const style = document.createElement('style');
-style.textContent = `
-  .nav-item {
-    position: relative;
-  }
-  .nav-item::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: 0;
-    height: 1px;
-    background-color: currentColor;
-    transition: width 0.3s ease;
-  }
-  .nav-item:hover::after {
-    width: 100%;
-  }
-`;
-document.head.appendChild(style);
+export function NavStyleProvider() {
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      .nav-item {
+        position: relative;
+      }
+      .nav-item::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background-color: currentColor;
+        transition: width 0.3s ease;
+      }
+      .nav-item:hover::after {
+        width: 100%;
+      }
+    `;
+    document.head.appendChild(style);
+    
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+  
+  return null;
+}
