@@ -10,19 +10,19 @@ export default function Footer() {
   };
 
   const companyLinks = [
-    { label: "About Us", href: "#" },
-    { label: "Our Mission", href: "#" },
-    { label: "Sustainability", href: "#" },
-    { label: "Careers", href: "#" },
-    { label: "Press", href: "#" }
+    { label: "About Us", href: "/about", isPage: true },
+    { label: "Our Mission", href: "/mission", isPage: true },
+    { label: "Sustainability", href: "#", isPage: false },
+    { label: "Careers", href: "#", isPage: false },
+    { label: "Press", href: "#", isPage: false }
   ];
 
   const supportLinks = [
-    { label: "Help Center", href: "#" },
-    { label: "Contact Us", href: "#contact", isSection: true },
-    { label: "Shipping Info", href: "#" },
-    { label: "Warranty", href: "#" },
-    { label: "Returns", href: "#" }
+    { label: "Help Center", href: "#", isPage: false, isSection: false },
+    { label: "Contact Us", href: "/contact", isPage: true, isSection: false },
+    { label: "Shipping Info", href: "#", isPage: false, isSection: false },
+    { label: "Warranty", href: "#", isPage: false, isSection: false },
+    { label: "Returns", href: "#", isPage: false, isSection: false }
   ];
 
   const legalLinks = [
@@ -69,9 +69,15 @@ export default function Footer() {
             <ul className="mt-4 space-y-2">
               {companyLinks.map((link, index) => (
                 <li key={index}>
-                  <a href={link.href} className="text-gray-500 hover:text-primary transition">
-                    {link.label}
-                  </a>
+                  {link.isPage ? (
+                    <Link href={link.href} className="text-gray-500 hover:text-primary transition">
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <a href={link.href} className="text-gray-500 hover:text-primary transition">
+                      {link.label}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
@@ -82,13 +88,10 @@ export default function Footer() {
             <ul className="mt-4 space-y-2">
               {supportLinks.map((link, index) => (
                 <li key={index}>
-                  {link.isSection ? (
-                    <button 
-                      onClick={() => scrollToSection(link.href.substring(1))} 
-                      className="text-gray-500 hover:text-primary transition cursor-pointer"
-                    >
+                  {link.isPage ? (
+                    <Link href={link.href} className="text-gray-500 hover:text-primary transition">
                       {link.label}
-                    </button>
+                    </Link>
                   ) : (
                     <a href={link.href} className="text-gray-500 hover:text-primary transition">
                       {link.label}
