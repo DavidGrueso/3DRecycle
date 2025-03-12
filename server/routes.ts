@@ -4,6 +4,15 @@ import { storage } from "./storage";
 import { contactFormSchema } from "@shared/schema";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
+import Stripe from "stripe";
+
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw new Error("Missing required environment variable: STRIPE_SECRET_KEY");
+}
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: "2023-10-16"
+});
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // API routes prefix
@@ -95,6 +104,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       res.status(500).json({ message: "Error saving contact form" });
+    }
+  });
+
+  // Stripe payment endpoints
+  app.post(`${apiRouter}/create-payment-intent`, async (req, res) => {
+    try {
+      const { amount } = req.body;
+
+      // Create a PaymentIntent with the order amount and currency
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: Math.round(amount * 100), // Convert to cents
+        currency: "usd",
+        automatic_payment_methods: {
+          enabled: true,
+        },
+      });
+
+      res.json({
+        clientSecret: paymentIntent.client_secret,
+      });
+    } catch (error: any) {
+      res.status(500).json({
+        error: {
+          message: error.message,
+        },
+      });
     }
   });
 
