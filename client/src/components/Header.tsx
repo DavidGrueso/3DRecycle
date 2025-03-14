@@ -10,19 +10,25 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useCart } from "@/lib/CartContext";
 import { Badge } from "@/components/ui/badge";
+import { useTranslation } from 'react-i18next';
 
 export default function Header() {
+  const { t, i18n } = useTranslation();
   const [location] = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const { cartCount } = useCart();
-  
+
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
+
   // Handle scroll effect for the header
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.pageYOffset;
       setIsScrolled(scrollTop > 10);
     };
-    
+
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -31,18 +37,18 @@ export default function Header() {
 
   // Navigation items
   const navItems = [
-    { id: "overview", label: "Overview" },
-    { id: "features", label: "Features" },
-    { id: "specifications", label: "Tech Specs" },
-    { id: "faq", label: "FAQ" },
-    { id: "contact", label: "Contact" },
+    { id: "overview", label: t("overview") },
+    { id: "features", label: t("features") },
+    { id: "specifications", label: t("specifications") },
+    { id: "faq", label: t("faq") },
+    { id: "contact", label: t("contact") },
   ];
-  
+
   // Product versions
   const productVersions = [
-    { id: "standard", label: "EcoFilament Standard", path: "/products/standard" },
-    { id: "pro", label: "EcoFilament Pro", path: "/products/pro" },
-    { id: "industrial", label: "EcoFilament Industrial", path: "/products/industrial" }
+    { id: "standard", label: t("ecoFilamentStandard"), path: "/products/standard" },
+    { id: "pro", label: t("ecoFilamentPro"), path: "/products/pro" },
+    { id: "industrial", label: t("ecoFilamentIndustrial"), path: "/products/industrial" }
   ];
 
   const scrollToSection = (id: string) => {
@@ -53,7 +59,7 @@ export default function Header() {
   };
 
   return (
-    <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/90 backdrop-blur-md border-b border-gray-200/70' : 'bg-white/80'}`}>
+    <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/70 backdrop-blur-md border-b border-gray-200/70' : 'bg-white/80'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
@@ -75,23 +81,29 @@ export default function Header() {
             ))}
             
             {/* Products Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger className="text-sm font-medium hover:text-primary transition cursor-pointer flex items-center">
-                Products <ChevronDown className="ml-1 h-4 w-4" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                {productVersions.map((product) => (
-                  <DropdownMenuItem key={product.id} asChild>
-                    <Link href={product.path} className="w-full cursor-pointer">
+            <div className="relative group">
+              <button className="text-sm font-medium hover:text-primary transition cursor-pointer flex items-center">
+                {t("products")} <ChevronDown className="ml-1 h-4 w-4" />
+              </button>
+              <div className="absolute left-0 top-full mt-2 w-full bg-white shadow-lg border-t border-gray-200 hidden group-hover:flex justify-center">
+                <div className="max-w-7xl mx-auto flex w-full">
+                  {productVersions.map((product) => (
+                    <Link key={product.id} href={product.path} className="flex-1 text-center py-2 px-4 hover:bg-gray-100 transition">
                       {product.label}
                     </Link>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+                  ))}
+                </div>
+              </div>
+            </div>
           </nav>
           
           <div className="flex items-center space-x-4">
+            {/* Language Switcher */}
+            <div className="flex space-x-2">
+              <button onClick={() => changeLanguage('en')} className="text-sm font-medium hover:text-primary transition">EN</button>
+              <button onClick={() => changeLanguage('es')} className="text-sm font-medium hover:text-primary transition">ES</button>
+            </div>
+            
             {/* Account Button */}
             <Link href="/account" className="hidden md:flex text-gray-700 hover:text-primary transition">
               <User className="h-5 w-5" />
@@ -112,7 +124,7 @@ export default function Header() {
               onClick={() => scrollToSection("buy")}
               className="hidden md:inline-flex text-sm font-medium px-5 py-2 rounded-full border border-gray-800 hover:bg-gray-800 hover:text-white transition duration-300"
             >
-              Buy Now
+              {t("buyNow")}
             </button>
             
             {/* Mobile Navigation */}
@@ -137,7 +149,7 @@ export default function Header() {
                   
                   {/* Products in mobile menu */}
                   <div className="py-2">
-                    <p className="text-base font-medium mb-2">Products</p>
+                    <p className="text-base font-medium mb-2">{t("products")}</p>
                     <div className="pl-4 space-y-2">
                       {productVersions.map((product) => (
                         <Link
@@ -163,7 +175,7 @@ export default function Header() {
                       }}
                     >
                       <User className="h-5 w-5 mr-2" />
-                      My Account
+                      {t("myAccount")}
                     </Link>
                     
                     <Link 
@@ -181,7 +193,7 @@ export default function Header() {
                           </Badge>
                         )}
                       </div>
-                      Shopping Cart {cartCount > 0 && `(${cartCount})`}
+                      {t("shoppingCart")} {cartCount > 0 && `(${cartCount})`}
                     </Link>
                   </div>
                   
@@ -192,7 +204,7 @@ export default function Header() {
                     }}
                     className="mt-4 w-full text-sm font-medium px-5 py-2 rounded-full border border-gray-800 hover:bg-gray-800 hover:text-white transition duration-300"
                   >
-                    Buy Now
+                    {t("buyNow")}
                   </button>
                 </div>
               </SheetContent>

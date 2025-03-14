@@ -25,10 +25,10 @@ export default function IntroSection() {
           </div>
           
           <div className="animate-on-scroll">
-            <div className="relative rounded-2xl overflow-hidden shadow-xl">
+            <div className="relative h-[300px] rounded-2xl overflow-hidden shadow-xl">
               <div className="aspect-w-16 aspect-h-9 bg-black/5 flex items-center justify-center">
                 <img 
-                  src="https://images.unsplash.com/photo-1605279591993-35850a03073e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                  src="https://images.unsplash.com/photo-1615485290382-441e4d049cb5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" 
                   alt="Machine in operation" 
                   className="w-full"
                 />

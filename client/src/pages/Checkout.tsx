@@ -122,7 +122,7 @@ export default function Checkout() {
       city: "",
       state: "",
       zipCode: "",
-      country: "United States",
+      country: "ESPAÑA",
       specialInstructions: "",
     },
   });

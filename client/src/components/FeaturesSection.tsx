@@ -22,7 +22,7 @@ export default function FeaturesSection() {
         "Automatic parameter adjustment",
         "Quality consistency assurance"
       ],
-      image: "https://images.unsplash.com/photo-1563770660941-10971f1eebc8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      image: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
       alt: "Intelligent processing",
       reverse: true
     },
@@ -34,7 +34,8 @@ export default function FeaturesSection() {
         "iOS and Android companion app",
         "Cloud storage for custom profiles"
       ],
-      image: "https://images.unsplash.com/photo-1564466809058-bf4114d55352?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      //image: "https://images.unsplash.com/photo-1564466809058-bf4114d55352?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      image: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
       alt: "Intuitive control interface",
       reverse: false
     }

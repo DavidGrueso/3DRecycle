@@ -22,6 +22,11 @@ export default defineConfig({
         ]
       : []),
   ],
+  define: {
+    'process.env': {
+      VITE_STRIPE_PUBLIC_KEY: JSON.stringify(process.env.STRIPE_PUBLIC_KEY),
+    },
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "client", "src"),
@@ -32,5 +37,10 @@ export default defineConfig({
   build: {
     outDir: path.resolve(__dirname, "dist/public"),
     emptyOutDir: true,
+  },
+  server: {
+    hmr: {
+      overlay: false,
+    },
   },
 });
