@@ -3,28 +3,16 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from 'react-i18next';
 
 export default function BuySection() {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const [isAddingStandard, setIsAddingStandard] = useState(false);
   const [isAddingPro, setIsAddingPro] = useState(false);
 
-  const standardFeatures = [
-    "EcoFilament Machine",
-    "1-year warranty",
-    "5 empty spools",
-    "Basic material starter kit",
-    "Free shipping"
-  ];
-
-  const proFeatures = [
-    "EcoFilament Machine",
-    "3-year extended warranty",
-    "10 empty spools",
-    "Advanced material kit with colorants",
-    "Priority customer support",
-    "Free shipping + express option"
-  ];
+  const standardFeatures = t("standardFeatures", { returnObjects: true }) as string[];
+  const proFeatures = t("proFeatures", { returnObjects: true }) as string[];
 
   const handleAddToCart = async (plan: string) => {
     if (plan === "standard") {
@@ -38,13 +26,13 @@ export default function BuySection() {
       await apiRequest("POST", "/api/cart", { plan });
       
       toast({
-        title: "Added to cart",
-        description: `EcoFilament ${plan === "standard" ? "Standard" : "Pro"} has been added to your cart.`,
+        title: t("addToCart"),
+        description: `EcoFilament ${plan === "standard" ? t("standardPlan") : t("proPlan")} ${t("addedToCart")}`,
       });
     } catch (error) {
       toast({
         title: "Error",
-        description: "There was an error adding the item to your cart. Please try again.",
+        description: t("errorAddingToCart"),
         variant: "destructive",
       });
       console.error("Error adding to cart:", error);
@@ -58,9 +46,9 @@ export default function BuySection() {
     <section id="buy" className="py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 animate-on-scroll">
-          <h2 className="text-3xl md:text-5xl font-semibold">Get EcoFilament.</h2>
+          <h2 className="text-3xl md:text-5xl font-semibold">{t("getEcoFilament")}</h2>
           <p className="mt-6 text-xl text-gray-500 max-w-3xl mx-auto">
-            Be part of the recycling revolution today.
+            {t("recyclingRevolution")}
           </p>
         </div>
 
@@ -70,10 +58,10 @@ export default function BuySection() {
             transition={{ type: "spring", stiffness: 300 }}
             className="bg-white rounded-2xl border border-gray-200 shadow-lg p-8 animate-on-scroll"
           >
-            <h3 className="text-2xl font-semibold mb-4">EcoFilament Standard</h3>
-            <div className="text-4xl font-bold mb-6">$1,999</div>
+            <h3 className="text-2xl font-semibold mb-4">{t("standardPlan")}</h3>
+            <div className="text-4xl font-bold mb-6">{t("priceStandard")}</div>
             <ul className="space-y-3 mb-8">
-              {standardFeatures.map((feature, index) => (
+              {Array.isArray(standardFeatures) && standardFeatures.map((feature: string, index: number) => (
                 <li key={index} className="flex items-start">
                   <div className="rounded-full p-1 bg-primary/10 mt-1 mr-3">
                     <Check className="h-4 w-4 text-primary" />
@@ -87,7 +75,7 @@ export default function BuySection() {
               disabled={isAddingStandard}
               className="w-full py-4 bg-gray-900 text-white rounded-full hover:bg-black transition disabled:opacity-70"
             >
-              {isAddingStandard ? "Adding..." : "Add to Cart"}
+              {isAddingStandard ? t("adding") : t("addToCart")}
             </button>
           </motion.div>
 
@@ -97,11 +85,11 @@ export default function BuySection() {
             className="bg-gray-50 rounded-2xl border border-primary shadow-lg p-8 animate-on-scroll"
             style={{ animationDelay: "0.2s" }}
           >
-            <div className="inline-block px-3 py-1 bg-primary text-white text-xs font-semibold rounded-full mb-2">MOST POPULAR</div>
-            <h3 className="text-2xl font-semibold mb-4">EcoFilament Pro</h3>
-            <div className="text-4xl font-bold mb-6">$2,499</div>
+            <div className="inline-block px-3 py-1 bg-primary text-white text-xs font-semibold rounded-full mb-2">{t("mostPopular")}</div>
+            <h3 className="text-2xl font-semibold mb-4">{t("proPlan")}</h3>
+            <div className="text-4xl font-bold mb-6">{t("pricePro")}</div>
             <ul className="space-y-3 mb-8">
-              {proFeatures.map((feature, index) => (
+              {Array.isArray(proFeatures) && proFeatures.map((feature: string, index: number) => (
                 <li key={index} className="flex items-start">
                   <div className="rounded-full p-1 bg-primary/10 mt-1 mr-3">
                     <Check className="h-4 w-4 text-primary" />
@@ -115,7 +103,7 @@ export default function BuySection() {
               disabled={isAddingPro}
               className="w-full py-4 bg-primary text-white rounded-full hover:bg-primary/90 transition disabled:opacity-70"
             >
-              {isAddingPro ? "Adding..." : "Add to Cart"}
+              {isAddingPro ? t("adding") : t("addToCart")}
             </button>
           </motion.div>
         </div>

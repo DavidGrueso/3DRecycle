@@ -6,7 +6,7 @@ export default function GallerySection() {
       className: "col-span-1"
     },
     {
-      src: "https://images.unsplash.com/photo-1578327257813-835cdb05bddb?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+      src: "https://images.unsplash.com/photo-1559563362-c667ba5f5480?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
       alt: "3D printed object",
       className: "col-span-1"
     },
