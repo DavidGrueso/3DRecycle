@@ -14,7 +14,7 @@ export default function Footer() {
     { label: "Our Mission", href: "/mission", isPage: true },
     { label: "Sustainability", href: "#", isPage: false },
     { label: "Careers", href: "#", isPage: false },
-    { label: "Press", href: "#", isPage: false }
+    { label: "FAQs", href: "/faq", isPage: false }
   ];
 
   const supportLinks = [

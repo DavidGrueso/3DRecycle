@@ -23,7 +23,6 @@ export default function Home() {
         <GallerySection />
         <SpecificationsSection />
         <BuySection />
-        <FAQSection />
         <ContactSection />
         <CTASection />
       </main>

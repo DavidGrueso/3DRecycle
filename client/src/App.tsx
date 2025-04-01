@@ -21,6 +21,7 @@ import Account from "@/pages/Account";
 import Cart from "@/pages/Cart";
 import Checkout from "@/pages/Checkout";
 import ProductDetail from "@/pages/ProductDetail";
+import FAQ from "./pages/faq";
 
 function Router() {
   return (
@@ -41,6 +42,7 @@ function Router() {
       <Route path="/cart" component={Cart} />
       <Route path="/checkout" component={Checkout} />
       <Route path="/products/:id" component={ProductDetail} />
+      <Route path="/faq" component={FAQ} />
       {/* Fallback to 404 */}
       <Route component={NotFound} />
     </Switch>

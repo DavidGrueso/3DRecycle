@@ -10,42 +10,14 @@ import Footer from "@/components/Footer";
 
 // Product data for all product versions
 const products = {
-  "standard": {
-    id: "standard",
-    name: "EcoFilament Standard",
-    tagline: "The Perfect Entry-Level Converter",
-    price: 599,
-    description: "The EcoFilament Standard is perfect for hobbyists and small businesses looking to start recycling plastic bottles into 3D printing filament. This compact model offers excellent quality at an affordable price.",
-    features: [
-      "Converts up to 3 plastic bottles per hour",
-      "Creates 1.75mm standard filament",
-      "Easy one-touch operation",
-      "Compact design for home or small studio use",
-      "12-month warranty",
-      "Energy-efficient operation"
-    ],
-    specs: {
-      "Dimensions": "18 × 12 × 15 inches",
-      "Weight": "22 pounds",
-      "Power": "120V, 300W",
-      "Filament Diameter": "1.75mm ± 0.05mm",
-      "Materials": "PET, PETG",
-      "Conversion Rate": "Up to 3 bottles/hour",
-      "Temperature Range": "160-240°C",
-      "Noise Level": "<65 dB"
-    },
-    image: "/placeholder.svg",
-    recommended: false
-  },
   "pro": {
     id: "pro",
     name: "EcoFilament Pro",
     tagline: "Professional Performance for Dedicated Makers",
-    price: 999,
+    price: 230,
     description: "Take your recycling capabilities to the next level with EcoFilament Pro. Designed for dedicated makers and small production environments with higher volume needs and professional-grade output.",
     features: [
       "Converts up to 7 plastic bottles per hour",
-      "Dual filament sizes (1.75mm and 2.85mm)",
       "Touch screen control panel",
       "Advanced temperature monitoring",
       "WiFi connectivity for remote operation",
@@ -54,47 +26,17 @@ const products = {
       "Filament quality sensor"
     ],
     specs: {
-      "Dimensions": "22 × 15 × 18 inches",
-      "Weight": "35 pounds",
-      "Power": "120-240V, 500W",
-      "Filament Diameter": "1.75mm or 2.85mm ± 0.03mm",
-      "Materials": "PET, PETG, HDPE, PP",
-      "Conversion Rate": "Up to 7 bottles/hour",
+      "Dimensions": "22 × 15 × 18 cm",
+      "Weight": "3,5 kg",
+      "Power": "240V, 40W",
+      "Filament Diameter": "1.75mm ± 0.02mm",
+      "Materials": "PET",
+      "Conversion Rate": "Up to 2 bottles/hour",
       "Temperature Range": "160-280°C",
       "Noise Level": "<60 dB"
     },
     image: "/placeholder.svg",
     recommended: true
-  },
-  "industrial": {
-    id: "industrial",
-    name: "EcoFilament Industrial",
-    tagline: "Commercial-Grade Recycling Solution",
-    price: 2499,
-    description: "The EcoFilament Industrial is our flagship model designed for businesses, schools, and manufacturing environments requiring high-volume, continuous filament production with exceptional precision.",
-    features: [
-      "Converts up to 20 plastic bottles per hour",
-      "Multi-material processing capability",
-      "Touchscreen interface with custom programming",
-      "Cloud-based monitoring and analytics",
-      "Automatic cleaning and maintenance cycles",
-      "36-month comprehensive warranty",
-      "Dedicated technical support line",
-      "Multiple color masterbatch integration",
-      "Continuous operation design"
-    ],
-    specs: {
-      "Dimensions": "36 × 24 × 28 inches",
-      "Weight": "78 pounds",
-      "Power": "220-240V, 1200W",
-      "Filament Diameter": "1.75mm/2.85mm/3.00mm ± 0.02mm",
-      "Materials": "PET, PETG, HDPE, PP, ABS, PC",
-      "Conversion Rate": "Up to 20 bottles/hour",
-      "Temperature Range": "160-320°C",
-      "Noise Level": "<70 dB"
-    },
-    image: "/placeholder.svg",
-    recommended: false
   }
 };
 
@@ -107,7 +49,7 @@ export default function ProductDetail() {
   const { toast } = useToast();
   
   // Get the product data
-  const product = products[productId as keyof typeof products] || products.standard;
+  const product = products[productId as keyof typeof products] || products.pro;
 
   // Handle adding product to cart
   const handleAddToCart = () => {
@@ -155,8 +97,8 @@ export default function ProductDetail() {
                   <p className="text-gray-600 mb-8">{product.description}</p>
                   
                   <div className="flex items-baseline mb-8">
-                    <span className="text-3xl font-bold">${product.price}</span>
-                    <span className="ml-2 text-gray-500">USD</span>
+                    <span className="text-3xl font-bold">€{product.price}</span>
+                    <span className="ml-2 text-gray-500">EUR</span>
                   </div>
                   
                   <div className="flex flex-wrap items-center gap-4">
@@ -172,7 +114,7 @@ export default function ProductDetail() {
                   
                   {product.recommended && (
                     <div className="mt-6 inline-flex items-center bg-primary/10 text-primary px-3 py-1 rounded-full text-sm">
-                      <Check className="h-4 w-4 mr-1" /> Most Popular Choice
+                      <Check className="h-4 w-4 mr-1" /> Recommended Product
                     </div>
                   )}
                 </div>
@@ -249,49 +191,6 @@ export default function ProductDetail() {
               </div>
             </TabsContent>
           </Tabs>
-        </section>
-        
-        {/* Product comparison section */}
-        <section className="container mx-auto px-4 max-w-6xl mt-16">
-          <h2 className="text-2xl font-semibold mb-8 text-center">Compare EcoFilament Models</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {Object.values(products).map((prod) => (
-              <div 
-                key={prod.id} 
-                className={`border rounded-lg p-6 ${
-                  prod.id === product.id ? 'border-primary bg-primary/5 ring-2 ring-primary/20' : ''
-                }`}
-              >
-                <h3 className="text-xl font-medium mb-2">{prod.name}</h3>
-                <p className="text-gray-600 mb-4 text-sm">{prod.tagline}</p>
-                <p className="text-2xl font-bold mb-6">${prod.price}</p>
-                
-                <ul className="mb-8 space-y-2 text-sm">
-                  <li className="flex items-start">
-                    <Check className="h-4 w-4 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                    <span>Converts {prod.specs["Conversion Rate"]}</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Check className="h-4 w-4 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                    <span>Filament: {prod.specs["Filament Diameter"]}</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Check className="h-4 w-4 text-primary mr-2 mt-0.5 flex-shrink-0" />
-                    <span>Materials: {prod.specs["Materials"].split(',')[0]}...</span>
-                  </li>
-                </ul>
-                
-                {prod.id === product.id ? (
-                  <Button variant="secondary" disabled className="w-full">Current Selection</Button>
-                ) : (
-                  <Button variant="outline" className="w-full" asChild>
-                    <Link href={`/products/${prod.id}`}>View Details</Link>
-                  </Button>
-                )}
-              </div>
-            ))}
-          </div>
         </section>
         
         {/* Call to action */}

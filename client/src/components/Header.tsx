@@ -2,12 +2,6 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, User, ShoppingCart, ChevronDown } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { useCart } from "@/lib/CartContext";
 import { Badge } from "@/components/ui/badge";
 import { useTranslation } from 'react-i18next';
@@ -40,16 +34,11 @@ export default function Header() {
     { id: "overview", label: t("overview") },
     { id: "features", label: t("features") },
     { id: "specifications", label: t("specifications") },
-    { id: "faq", label: t("faq") },
     { id: "contact", label: t("contact") },
+    { id: "pro", label: t("EcoFilament Pro"), href: "/products/pro" } // Actualizamos este botón
+
   ];
 
-  // Product versions
-  const productVersions = [
-    { id: "standard", label: t("ecoFilamentStandard"), path: "/products/standard" },
-    { id: "pro", label: t("ecoFilamentPro"), path: "/products/pro" },
-    { id: "industrial", label: t("ecoFilamentIndustrial"), path: "/products/industrial" }
-  ];
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -59,7 +48,7 @@ export default function Header() {
   };
 
   return (
-    <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/70 backdrop-blur-md border-b border-gray-200/70' : 'bg-white/80'}`}>
+    <header className={`fixed top-0 w-full z-50 transition-all duration-100 ${isScrolled ? 'bg-white/70 backdrop-blur-md border-b border-gray-200/70' : 'bg-white/80'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
@@ -71,6 +60,15 @@ export default function Header() {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
             {navItems.map((item) => (
+                item.id === "pro" && item.href ? (
+                  <Link
+                    key={item.id}
+                    href={item.href} // Redirige a la página del producto
+                    className="text-sm font-medium hover:text-primary transition cursor-pointer relative nav-item"
+                  >
+                    {item.label}
+                  </Link>
+                ) : (
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
@@ -78,23 +76,8 @@ export default function Header() {
               >
                 {item.label}
               </button>
+                )
             ))}
-            
-            {/* Products Dropdown */}
-            <div className="relative group">
-              <button className="text-sm font-medium hover:text-primary transition cursor-pointer flex items-center">
-                {t("products")} <ChevronDown className="ml-1 h-4 w-4" />
-              </button>
-              <div className="absolute left-0 top-full mt-2 w-full bg-white shadow-lg border-t border-gray-200 hidden group-hover:flex justify-center">
-                <div className="max-w-7xl mx-auto flex w-full">
-                  {productVersions.map((product) => (
-                    <Link key={product.id} href={product.path} className="flex-1 text-center py-2 px-4 hover:bg-gray-100 transition">
-                      {product.label}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
           </nav>
           
           <div className="flex items-center space-x-4">
@@ -146,25 +129,6 @@ export default function Header() {
                       {item.label}
                     </button>
                   ))}
-                  
-                  {/* Products in mobile menu */}
-                  <div className="py-2">
-                    <p className="text-base font-medium mb-2">{t("products")}</p>
-                    <div className="pl-4 space-y-2">
-                      {productVersions.map((product) => (
-                        <Link
-                          key={product.id}
-                          href={product.path}
-                          className="block text-sm py-1 text-gray-600 hover:text-primary transition"
-                          onClick={() => {
-                            document.querySelector('[data-state="open"]')?.setAttribute('data-state', 'closed');
-                          }}
-                        >
-                          {product.label}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
                   
                   <div className="pt-4 border-t border-gray-100">
                     <Link 
